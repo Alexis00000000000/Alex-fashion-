@@ -1,4 +1,58 @@
-Eclipse Public License - v 2.0
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+const cartBtn = document.getElementById('cart-btn');
+const addToCartBtn = document.getElementById('add-to-cart');
+const cartModal = document.getElementById('cart-modal');
+const cartItems = document.getElementById('cart-items');
+const totalEl = document.getElementById('total');
+const closeBtn = document.querySelector('.close');
+const checkoutBtn = document.getElementById('checkout');
+
+addToCartBtn.addEventListener('click', () => {
+    cart.push({ name: 'Elegant Evening Dress', price: 79.99 });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCart();
+});
+
+cartBtn.addEventListener('click', () => {
+    updateCartDisplay();
+    cartModal.style.display = 'block';
+});
+
+closeBtn.addEventListener('click', () => {
+    cartModal.style.display = 'none';
+});
+
+checkoutBtn.addEventListener('click', () => {
+    alert('Checkout functionality not implemented. Integrate with payment gateway.');
+});
+
+function updateCart() {
+    cartBtn.textContent = `Cart (${cart.length})`;
+}
+
+function updateCartDisplay() {
+    cartItems.innerHTML = '';
+    let total = 0;
+    cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - $${item.price}`;
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+            updateCartDisplay();
+        });
+        li.appendChild(removeBtn);
+        cartItems.appendChild(li);
+        total += item.price;
+    });
+    totalEl.textContent = `Total: $${total.toFixed(2)}`;
+}
+
+updateCart();
+Public License - v 2.0
 
     THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE
     PUBLIC LICENSE ("AGREEMENT"). ANY USE, REPRODUCTION OR DISTRIBUTION
